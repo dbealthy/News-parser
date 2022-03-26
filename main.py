@@ -36,7 +36,7 @@ def main():
             links = tree.xpath(top_tag)
             existing_links =  [r[0] for r in db.query("SELECT link FROM `items` WHERE `res_id` = %s", (id,))]
     
-            for id, link in enumerate(links):
+            for link in links:
                 link = make_absolute_url(url, link)
                 print_inline(link, last_link)
                 if link in existing_links:
