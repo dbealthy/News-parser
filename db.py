@@ -1,16 +1,8 @@
 import mysql.connector
 
-config = {
-  'user': 'user',
-  'password': 'Bogatov123!',
-  'host': 'localhost',
-  'database': 'webparser',
-  'auth_plugin': 'mysql_native_password'
-  #'raise_on_warnings': True
-}
 
 class WebparserDB:
-    def __init__(self, config=config):
+    def __init__(self, config):
         self._conn = mysql.connector.connect(**config)
         self._cursor = self._conn.cursor()
 
@@ -49,10 +41,6 @@ class WebparserDB:
         self.cursor.execute(sql, params or ())
         return self.fetchall()
 
-    # def save_item(self, item):        
-    #     params = (item["res_id"], item["link"], item["title"], item["content"], item["nd_date"], item["not_date"])
-    #     return self.query("INSERT INTO `items` (res_id, link, title, content, nd_date, s_date, not_date) VALUES (%s, %s, %s, %s, %s, UNIX_TIMESTAMP(CURRENT_TIMESTAMP), %s)", params)
-
 
     def save_items(self, items):
         if items:
@@ -60,4 +48,9 @@ class WebparserDB:
             sql_insert = "INSERT IGNORE INTO `items` (res_id, link, title, content, nd_date, s_date, not_date) VALUES (%s, %s, %s, %s, %s, UNIX_TIMESTAMP(CURRENT_TIMESTAMP), %s)"
             self._cursor.executemany(sql_insert, params)
             self.commit()
-        
+
+    def save_item(self, item):        
+        params = (item["res_id"], item["link"], item["title"], item["content"], item["nd_date"], item["not_date"])
+        self.execute("INSERT INTO `items` (res_id, link, title, content, nd_date, s_date, not_date) VALUES (%s, %s, %s, %s, %s, UNIX_TIMESTAMP(CURRENT_TIMESTAMP), %s)", params)
+
+    

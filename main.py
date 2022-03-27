@@ -4,6 +4,7 @@ import dateparser, time
 from lxml import html
 
 from db import WebparserDB
+from config import dbconfig
 from tools import *
 
 
@@ -19,8 +20,7 @@ def main():
         message="The localize method is no longer necessary, as this time zone supports the fold attribute",
     )
 
- 
-    with WebparserDB() as db:
+    with WebparserDB(dbconfig) as db:
         resource = db.query("SELECT * FROM `resource`")
         for row in resource:
             id, name, url, top_tag, bottom_tag, title_cut, date_cut = row 
@@ -91,10 +91,5 @@ def fetch_item(res_id, url, link, bottom_tag, title_cut, date_cut):
         "not_date": not_date}
 
 
-
-
-
-
 if __name__ == "__main__":
     main()
-
