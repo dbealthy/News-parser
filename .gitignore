@@ -2,5 +2,5 @@ xpathes.txt
 xpathtest.py
 config.py
 main.profile
-/__pycache__
+__pycache__/
 
